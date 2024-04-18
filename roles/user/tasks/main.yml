@@ -1,0 +1,10 @@
+---
+- name: "Include user tasks"
+  ansible.builtin.include_tasks: "user.yml"
+  loop: "{{ user_users }}"
+  loop_control:
+    loop_var: "user"
+    label: "{{ user.name }}"
+  when:
+    - "user_users is defined"
+    - "user_users | length > 0"

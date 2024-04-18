@@ -1,0 +1,41 @@
+---
+- name: "Install cockpit dnf packages"
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ cockpit_package_name }}"
+    state: "present"
+  notify: "Restart cockpit systemd service"
+
+- name: "Gather package facts"
+  ansible.builtin.package_facts:
+
+- name: "Install cockpit dnf packages (extra)"
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ item.name }}"
+    state: "present"
+  when: "item.required in ansible_facts.packages"
+  loop: "{{ cockpit_package_extra }}"
+  notify: "Restart cockpit systemd service"
+
+- name: "Manage cockpit systemd service"
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ cockpit_service_name }}"
+    state: "{{ cockpit_service_state }}"
+    enabled: "{{ cockpit_service_enabled }}"
+
+- name: "Gather service facts"
+  ansible.builtin.service_facts:
+
+- name: "Manage cockpit firewalld policy"
+  become: true
+  ansible.posix.firewalld:
+    service: "{{ cockpit_firewall_service }}"
+    state: "{{ cockpit_firewall_state }}"
+    zone: "{{ cockpit_firewall_zone | default(omit) }}"
+    immediate: "{{ cockpit_firewall_immediate }}"
+    permanent: "{{ cockpit_firewall_permanent }}"
+  when:
+    - "ansible_facts.services['firewalld.service'] is defined"
+    - "ansible_facts.services['firewalld.service']['state'] == 'running'"

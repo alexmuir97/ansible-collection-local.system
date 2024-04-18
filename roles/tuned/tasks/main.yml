@@ -1,0 +1,14 @@
+---
+- name: "Install tuned dnf packages"
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ tuned_package_name }}"
+    state: "present"
+  notify: "Restart tuned systemd services"
+
+- name: "Manage tuned systemd services"
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ tuned_service_name }}"
+    state: "{{ tuned_service_state }}"
+    enabled: "{{ tuned_service_enabled }}"

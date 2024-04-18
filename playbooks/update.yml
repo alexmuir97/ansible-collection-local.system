@@ -1,0 +1,10 @@
+- name: "Manage updates"
+  hosts: "{{ hosts_target | default('') }}"
+
+  tasks:
+
+    - name: "Import update role"
+      ansible.builtin.import_role:
+        name: "local.system.update"
+      tags:
+        - "update"

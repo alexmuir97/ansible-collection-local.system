@@ -1,0 +1,6 @@
+---
+- name: "Install git dnf packages"
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ git_package_name }}"
+    state: "present"

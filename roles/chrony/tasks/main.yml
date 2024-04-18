@@ -1,0 +1,25 @@
+---
+- name: "Install chrony dnf packages"
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ chrony_package_name }}"
+    state: "present"
+  notify: "Restart chrony systemd services"
+
+- name: "Provide chrony configuration file"
+  become: true
+  ansible.builtin.template:
+    src: "chrony.conf.j2"
+    dest: "/etc/chrony.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart chrony systemd services"
+
+- name: "Manage chrony systemd services"
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ chrony_service_name }}"
+    state: "{{ chrony_service_state }}"
+    enabled: "{{ chrony_service_enabled }}"
+ 

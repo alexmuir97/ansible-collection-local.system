@@ -1,0 +1,5 @@
+---
+## Package management
+bash_package_name:
+  - "bash"
+  - "bash-completion"

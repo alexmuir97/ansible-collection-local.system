@@ -1,0 +1,11 @@
+---
+- name: "Update packages"
+  become: true
+  ansible.builtin.package:
+    name: "{{ update_package_name }}"
+    state: "latest"
+  notify: "Reboot system"
+  when: "update_reboot_enabled | bool"
+
+- name: "Flush handlers"
+  ansible.builtin.meta: flush_handlers

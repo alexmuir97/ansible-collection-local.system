@@ -1,0 +1,6 @@
+---
+- name: "Install epel dnf packages"
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ epel_package_name }}"
+    state: "present"

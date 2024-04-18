@@ -1,0 +1,12 @@
+---
+- name: "Install selinux dnf packages"
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ selinux_package_name }}"
+    state: "present"
+
+- name: "Manage selinux configuration"
+  become: true
+  ansible.posix.selinux:
+    policy: "{{ selinux_config_policy }}"
+    state: "{{ selinux_config_state }}"

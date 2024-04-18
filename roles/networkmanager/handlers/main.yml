@@ -1,0 +1,17 @@
+---
+- name: "Restart networkmanager systemd services"
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ networkmanager_service_name }}"
+    state: "restarted"
+  when: "networkmanager_service_state != 'stopped'"
+
+- name: "Reboot system"
+  become: true
+  ansible.builtin.reboot:
+    reboot_timeout: "{{ networkmanager_reboot_timeout }}"
+    pre_reboot_delay: "{{ networkmanager_reboot_delay }}"
+    msg: "Automatic reboot will occur in {{ networkmanager_reboot_delay }} seconds."
+  when:
+    - "networkmanager_service_state != 'stopped'"
+    - "networkmanager_reboot_enabled"

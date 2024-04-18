@@ -1,0 +1,70 @@
+- name: "Setup system baseline"
+  hosts: "{{ hosts_target | default('') }}"
+
+  tasks:
+  
+    - name: "Import hostname role"
+      ansible.builtin.include_role:
+        name: "local.system.hostname"
+      tags:
+        - "hostname"
+
+    - name: "Import timezone role"
+      ansible.builtin.include_role:
+        name: "local.system.timezone"
+      tags:
+        - "timezone"
+        
+    - name: "Import chrony role"
+      ansible.builtin.include_role:
+        name: "local.system.chrony"
+      tags:
+        - "chrony"
+
+    - name: "Import selinux role"
+      ansible.builtin.include_role:
+        name: "local.system.selinux"
+      tags:
+        - "selinux"
+
+    - name: "Import firewalld role"
+      ansible.builtin.include_role:
+        name: "local.system.firewalld"
+      tags:
+        - "firewalld"
+
+    - name: "Import sshd role"
+      ansible.builtin.include_role:
+        name: "local.system.sshd"
+      tags:
+        - "sshd"
+        
+    - name: "Import networkmanager role"
+      ansible.builtin.include_role:
+        name: "local.system.networkmanager"
+      tags:
+        - "networkmanager"
+
+    - name: "Import avahi role"
+      ansible.builtin.include_role:
+        name: "local.system.avahi"
+      tags:
+        - "avahi"
+
+    - name: "Import user role"
+      ansible.builtin.include_role:
+        name: "local.system.user"
+      tags:
+        - "user"
+
+    - name: "Import bash role"
+      ansible.builtin.include_role:
+        name: "local.system.bash"
+      tags:
+        - "bash"
+
+    - name: "Import cockpit role"
+      ansible.builtin.include_role:
+        name: "local.system.cockpit"
+      tags:
+        - "cockpit"

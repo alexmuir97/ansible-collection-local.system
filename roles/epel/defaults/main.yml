@@ -1,0 +1,3 @@
+---
+## Package management
+epel_package_name: "epel-release"

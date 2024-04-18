@@ -1,0 +1,35 @@
+---
+- name: "Install firewalld dnf packages"
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ firewalld_package_name }}"
+    state: "present"
+  notify: "Restart firewalld systemd services"
+
+- name: "Manage firewalld systemd services"
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ firewalld_service_name }}"
+    state: "{{ firewalld_service_state }}"
+    enabled: "{{ firewalld_service_enabled }}"
+
+- name: "Set firewalld default zone"
+  become: true
+  ansible.builtin.command:
+    cmd: "firewall-cmd --set-default-zone={{ firewalld_config_default_zone }}"
+  register: "r_firewalld_default_zone"
+  changed_when: "'ZONE_ALREADY_SET' not in r_firewalld_default_zone.stderr"
+  when: "firewalld_service_state != 'stopped'"
+
+- name: "Enable firewalld default services"
+  become: true
+  ansible.posix.firewalld:
+    service: "{{ item }}"
+    state: "enabled"
+    zone: "{{ firewalld_config_default_zone }}"
+    immediate: true
+    permanent: true
+  loop: "{{ firewalld_config_default_services }}"
+  when:
+    - "firewalld_service_state != 'stopped'"
+    - "firewalld_config_default_services is defined"

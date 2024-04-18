@@ -1,0 +1,12 @@
+---
+## Package management
+firewalld_package_name: "firewalld"
+
+## Configuration management
+firewalld_config_default_zone: "public"
+firewalld_config_default_services: []
+
+## Service management
+firewalld_service_name: "firewalld.service"
+firewalld_service_state: "started"
+firewalld_service_enabled: true

@@ -1,0 +1,45 @@
+---
+- name: "Install networkmanager dnf packages"
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ networkmanager_package_name }}"
+    state: "present"
+  notify: "Restart networkmanager systemd services"
+
+- name: "Manage networkmanager systemd services"
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ networkmanager_service_name }}"
+    state: "{{ networkmanager_service_state }}"
+    enabled: "{{ networkmanager_service_enabled }}"
+
+- name: "Manage connections using nmcli"
+  become: true
+  community.general.nmcli:
+    conn_name: "{{ item.conn_name }}"
+    type: "{{ item.type }}"
+    state: "{{ item.state }}"
+    ifname: "{{ item.ifname | default(omit) }}"
+    vlandev: "{{ item.vlandev | default(omit) }}"
+    vlanid: "{{ item.vlanid | default(omit) }}"
+    method4: "{{ item.method4 | default(omit) }}"
+    ip4: "{{ item.ip4 | default(omit) }}"
+    gw4: "{{ item.gw4 | default(omit) }}"
+    dns4: "{{ item.dns4 | default(omit) }}"
+    dns4_search: "{{ item.dns4_search | default(omit) }}"
+    routes4: "{{ item.routes4 | default(omit) }}"
+    routes4_extended: "{{ item.routes4_extended | default(omit) }}"
+    method6: "{{ item.method6 | default(omit) }}"
+    ip6: "{{ item.ip6 | default(omit) }}"
+    gw6: "{{ item.gw6 | default(omit) }}"
+    dns6: "{{ item.dns6 | default(omit) }}"
+    dns6_search: "{{ item.dns6_search | default(omit) }}"
+    routes6: "{{ item.routes6 | default(omit) }}"
+    routes6_extended: "{{ item.routes6_extended | default(omit) }}"
+    autoconnect: "{{ item.autoconnect | default(omit) }}"
+  loop: "{{ networkmanager_nmcli_connection }}"
+  notify: "Reboot system"
+  when:
+    - "networkmanager_service_state != 'stopped'"
+    - "item.conn_name is defined"
+    - "item.conn_name | length > 0"

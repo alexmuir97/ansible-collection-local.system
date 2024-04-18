@@ -1,0 +1,46 @@
+---
+## Package management
+sshd_package_name: "openssh-server"
+
+## Configuration management: authentication
+# sshd_config_logingracetime: 120
+# sshd_config_permitrootlogin: "no"
+# sshd_config_strictmodes: "yes"
+# sshd_config_maxauthtries: 6
+# sshd_config_maxstartups: "10:30:100"
+# sshd_config_pubkeyauthentication: "yes"
+# sshd_config_passwordauthentication: "no"
+# sshd_config_permitemptypasswords: "no"
+
+## Configuration management: connection
+# sshd_config_port: 22
+# sshd_config_addressfamily: "any"
+# sshd_config_listenaddress:
+#   - "0.0.0.0"
+#   - "::"
+
+## Configuration management: logging
+# sshd_config_syslogfacility: "auth"
+# sshd_config_loglevel: "info"
+# sshd_config_printlastlog: "yes"
+
+## Configuration management: session
+# sshd_config_tcpkeepalive: "yes"
+# sshd_config_clientalivecountmax: 3
+# sshd_config_clientaliveinterval: 0
+# sshd_config_maxsessions: 10
+# sshd_config_compression: "yes"
+# sshd_config_allowagentforwarding: "yes"
+# sshd_config_x11forwarding: "no"
+
+## Service management
+sshd_service_name: "sshd.service"
+sshd_service_state: "started"
+sshd_service_enabled: true
+
+## Firewall management
+sshd_firewall_service: "ssh"
+sshd_firewall_state: "enabled"
+# sshd_firewall_zone: ""
+sshd_firewall_immediate: true
+sshd_firewall_permanent: true

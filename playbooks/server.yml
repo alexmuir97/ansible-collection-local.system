@@ -1,0 +1,25 @@
+- name: "Import system baseline playbook"
+  ansible.builtin.import_playbook: "local.system.baseline"
+
+- name: "Setup server"
+  hosts: "{{ hosts_target | default('') }}"
+  
+  tasks:
+
+    - name: "Import tuned role"
+      ansible.builtin.include_role:
+        name: "local.system.tuned"
+      tags:
+        - "tuned"
+
+    - name: "Import pcp role"
+      ansible.builtin.include_role:
+        name: "local.system.pcp"
+      tags:
+        - "pcp"
+
+    - name: "Import cockpit role"
+      ansible.builtin.include_role:
+        name: "local.system.cockpit"
+      tags:
+        - "cockpit"

@@ -1,0 +1,13 @@
+---
+## Package management
+networkmanager_package_name: "NetworkManager"
+
+## Service management
+networkmanager_service_name: "NetworkManager.service"
+networkmanager_service_state: "started"
+networkmanager_service_enabled: true
+
+## Reboot management
+networkmanager_reboot_enabled: true
+networkmanager_reboot_timeout: 300
+networkmanager_reboot_delay: 0

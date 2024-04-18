@@ -1,0 +1,10 @@
+---
+## Package management
+selinux_package_name:
+  - "libselinux"
+  - "selinux-policy"
+  - "policycoreutils-python-utils"
+
+## Configuration management
+selinux_config_policy: "targeted"
+selinux_config_state: "enforcing"

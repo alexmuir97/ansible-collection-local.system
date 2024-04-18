@@ -1,0 +1,27 @@
+{{ ansible_managed | comment }}
+
+## Session
+{%if sshd_config_clientaliveinterval is defined %}
+ClientAliveInterval {{ sshd_config_clientaliveinterval }}
+{% endif %}
+{%if sshd_config_clientalivecountmax is defined %}
+ClientAliveCountMax {{ sshd_config_clientalivecountmax }}
+{% endif %}
+{%if sshd_config_maxsessions is defined %}
+MaxSessions {{ sshd_config_maxsessions }}
+{% endif %}
+{%if sshd_config_compression is defined %}
+Compression {{ sshd_config_compression }}
+{% endif %}
+{%if sshd_config_useprivilegeseparation is defined %}
+UsePrivilegeSeparation {{ sshd_config_useprivilegeseparation }}
+{% endif %}
+{%if sshd_config_tcpkeepalive is defined %}
+TCPKeepAlive {{ sshd_config_tcpkeepalive }}
+{% endif %}
+{%if sshd_config_allowagentforwarding is defined %}
+AllowAgentForwarding {{ sshd_config_allowagentforwarding }}
+{% endif %}
+{%if sshd_config_x11forwarding is defined %}
+X11Forwarding {{ sshd_config_x11forwarding }}
+{% endif %}

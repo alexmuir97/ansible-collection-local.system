@@ -1,0 +1,10 @@
+---
+## Package management
+tuned_package_name:
+  - "tuned"
+  - "tuned-utils"
+
+## Service management
+tuned_service_name: "tuned.service"
+tuned_service_state: "started"
+tuned_service_enabled: true

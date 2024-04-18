@@ -1,0 +1,15 @@
+---
+- name: "Install pcp dnf packages"
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ pcp_package_name }}"
+    state: "present"
+  notify: "Restart pcp systemd services"
+
+- name: "Manage pcp systemd services"
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: "{{ pcp_service_state }}"
+    enabled: "{{ pcp_service_enabled }}"
+  loop: "{{ pcp_service_name }}"

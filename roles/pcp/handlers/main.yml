@@ -1,0 +1,8 @@
+---
+- name: "Restart pcp systemd services"
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: "restarted"
+  loop: "{{ pcp_service_name }}"
+  when: "pcp_service_state != 'stopped'"

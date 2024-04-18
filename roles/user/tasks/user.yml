@@ -1,0 +1,49 @@
+---
+- name: "Manage account for user: {{ user.comment }}"
+  become: true
+  ansible.builtin.user:
+    name: "{{ user.name }}"
+    comment: "{{ user.comment }}"
+    password: "{{ user.password | default(omit) }}"
+    password_lock: "{{ user.password_lock | default(user.password is undefined) }}"
+    groups: "{{ user.groups | default([]) }}"
+    uid: "{{ user.uid | default(omit) }}"
+    shell: "{{ user.shell | default(omit) }}"
+    create_home: '{{ user.create_home | default(omit) }}'
+    system: "{{ user.system | default(omit) }}"
+    state: "{{ user.state }}"
+    remove: "{{ user.remove | default(omit) }}"
+
+- name: "Manage authorized keys for user: {{ user.comment }}"
+  become: true
+  ansible.posix.authorized_key:
+    user: "{{ user.name }}"
+    key: "{{ item.key }}"
+    state: "{{ item.state | default('present') }}"
+    exclusive: "{{ item.exclusive | default(omit) }}"
+  loop: "{{ user.authorized_keys }}"
+  when:
+    - "user.authorized_keys is defined"
+    - "user.authorized_keys | length > 0"
+
+- name: "Provide sudoers file for user: {{ user.comment }}"
+  become: true
+  ansible.builtin.template:
+    src: "sudoers.d.user.j2"
+    dest: "/etc/sudoers.d/user-{{ user.name }}"
+    owner: "root"
+    group: "root"
+    mode: "0440"
+    validate: "visudo -cf %s"
+  when:
+    - "user['sudoers']['state'] is defined"
+    - "user['sudoers']['state'] == 'present'"
+
+- name: "Remove sudoers file for user: {{ user.comment }}"
+  become: true
+  ansible.builtin.file:
+    path: "/etc/sudoers.d/user-{{ user.name }}"
+    state: absent
+    mode: "0440"
+  when: "user['sudoers']['state'] is not defined or
+    user['sudoers']['state'] == 'absent'"

@@ -1,0 +1,7 @@
+---
+- name: "Restart firewalld systemd services"
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ firewalld_service_name }}"
+    state: "restarted"
+  when: "firewalld_service_state != 'stopped'"

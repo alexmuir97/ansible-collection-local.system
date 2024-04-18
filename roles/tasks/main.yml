@@ -1,0 +1,29 @@
+---
+- name: "Install avahi dnf packages"
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ avahi_package_name }}"
+    state: "present"
+  notify: "Restart avahi systemd services"
+
+- name: "Manage avahi systemd services"
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ avahi_service_name }}"
+    state: "{{ avahi_service_state }}"
+    enabled: "{{ avahi_service_enabled }}"
+
+- name: "Get service facts"
+  ansible.builtin.service_facts:
+
+- name: "Manage avahi firewalld policy"
+  become: true
+  ansible.posix.firewalld:
+    service: "{{ avahi_firewall_service }}"
+    state: "{{ avahi_firewall_state }}"
+    zone: "{{ avahi_firewall_zone | default(omit) }}"
+    immediate: "{{ avahi_firewall_immediate }}"
+    permanent: "{{ avahi_firewall_permanent }}"
+  when:
+    - "ansible_facts.services['firewalld.service'] is defined"
+    - "ansible_facts.services['firewalld.service']['state'] == 'running'"

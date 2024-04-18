@@ -1,0 +1,6 @@
+---
+- name: "Install bash dnf packages"
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ bash_package_name }}"
+    state: "present"

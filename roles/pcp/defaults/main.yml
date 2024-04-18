@@ -1,0 +1,14 @@
+---
+## Package management
+pcp_package_name:
+  - "pcp"
+  - "pcp-zeroconf"
+
+## Service management
+pcp_service_name:
+  - "pmcd.service"
+  - "pmlogger.service"
+  - "pmie.service"
+  - "pmproxy.service"
+pcp_service_state: "started"
+pcp_service_enabled: true

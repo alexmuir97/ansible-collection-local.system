@@ -1,0 +1,3 @@
+---
+## Package management
+ansible_package_name: "ansible-core"

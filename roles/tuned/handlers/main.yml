@@ -1,0 +1,7 @@
+---
+- name: "Restart tuned systemd services"
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ tuned_service_name }}"
+    state: "restarted"
+  when: "tuned_service_state != 'stopped'"

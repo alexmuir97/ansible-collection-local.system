@@ -1,0 +1,30 @@
+---
+## Package management
+cockpit_package_name:
+  - "cockpit"
+  - "cockpit-ws"
+  - "cockpit-system"
+  - "cockpit-storaged"
+cockpit_package_extra:
+  - name: "cockpit-selinux"
+    required: "libselinux"
+  - name: "cockpit-kdump"
+    required: "kexec-tools"
+  - name: "cockpit-pcp"
+    required: "pcp"
+  - name: "cockpit-podman"
+    required: "podman"
+  - name: "cockpit-machines"
+    required: "libvirt-client"
+
+## Service management
+cockpit_service_name: "cockpit.socket"
+cockpit_service_state: "started"
+cockpit_service_enabled: true
+
+## Firewall management
+cockpit_firewall_service: "cockpit"
+cockpit_firewall_state: "enabled"
+# cockpit_firewall_zone: ""
+cockpit_firewall_immediate: true
+cockpit_firewall_permanent: true
